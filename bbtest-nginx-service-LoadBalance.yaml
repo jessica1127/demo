@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbtest-loadbalancer-service
+  annotations:
+    # Enable PROXY protocol
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+    # Increase the ELB idle timeout to avoid issues with WebSockets or Server-Sent Events.
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+    #add this for aws can't create ELB for private VPC
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+    #add tag
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "Project=EP,Owner=bbzhang"
+spec:
+  type: LoadBalancer
+  ports:  
+  - name: bbtest-loadbalancer-service
+    port: 80
+    protocol: TCP
+  selector:
+    run: bbtest-nginx
