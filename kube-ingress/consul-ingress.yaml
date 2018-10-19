@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: consul-ingress
+spec:
+  rules:
+    - host: consul.dev.fwci.aws.fwmrm.net
+      http:
+        paths:
+          - backend:
+              serviceName: bb-consul-ui
+              servicePort: 8500
+            path: /
+    - host: consuldns.dev.fwci.aws.fwmrm.net
+      http:
+        paths:
+          - backend:
+              serviceName: bb-consul-dns
+              servicePort: 53
+            path: /
